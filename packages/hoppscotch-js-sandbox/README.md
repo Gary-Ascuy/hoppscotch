@@ -55,6 +55,9 @@ Tests does not work with nodejs 20, it's required nodejs flag
 
 ```sh
 NODE_OPTIONS="--no-node-snapshot" pnpm test
+
+# root
+NODE_OPTIONS="--no-node-snapshot" pnpm run --filter  js-sandbox test
 ```
 
 ## Versioning
