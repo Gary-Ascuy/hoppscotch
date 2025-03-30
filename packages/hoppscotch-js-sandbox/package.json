@@ -30,7 +30,7 @@
   "scripts": {
     "lint": "eslint --ext .ts,.js --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .ts,.js --ignore-path .gitignore .",
-    "test": "vitest run",
+    "test": "NODE_OPTIONS=\"--no-node-snapshot\" vitest run",
     "build": "vite build && tsc --emitDeclarationOnly",
     "clean": "pnpm tsc --build --clean",
     "postinstall": "pnpm run build",
