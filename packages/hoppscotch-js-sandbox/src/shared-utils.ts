@@ -229,6 +229,39 @@ export function preventCyclicObjects(
   }
 }
 
+export const isObject = (object: unknown): boolean => {
+  return object != null && typeof object === "object"
+}
+
+export const toJson = (object: any): string => {
+  return JSON.stringify(object, null, 0)
+}
+
+export const isDeepEqual = (object1: any, object2: any): boolean => {
+  const objKeys1 = Object.keys(object1)
+  const objKeys2 = Object.keys(object2)
+
+  if (objKeys1.length !== objKeys2.length) {
+    return false
+  }
+
+  for (const key of objKeys1) {
+    const value1 = object1[key]
+    const value2 = object2[key]
+
+    const isObjects = isObject(value1) && isObject(value2)
+
+    if (
+      (isObjects && !isDeepEqual(value1, value2)) ||
+      (!isObjects && value1 !== value2)
+    ) {
+      return false
+    }
+  }
+
+  return true
+}
+
 /**
  * Creates an Expectation object for use inside the sandbox
  * @param expectVal The expecting value of the expectation
@@ -443,7 +476,28 @@ export const createExpectation = (
     return undefined
   }
 
+  const toBeDeepEqualFn = (expectedVal: any) => {
+    let assertion = isDeepEqual(resolvedExpectVal, expectedVal)
+
+    if (negated) {
+      assertion = !assertion
+    }
+
+    const status = assertion ? "pass" : "fail"
+    const message = `Expected '${toJson(resolvedExpectVal)}' to${
+      negated ? " not" : ""
+    } be '${toJson(expectedVal)}'`
+
+    currTestStack[currTestStack.length - 1].expectResults.push({
+      status,
+      message,
+    })
+
+    return undefined
+  }
+
   result.toBe = toBeFn
+  result.toBeDeepEqual = toBeDeepEqualFn
   result.toBeLevel2xx = toBeLevel2xxFn
   result.toBeLevel3xx = toBeLevel3xxFn
   result.toBeLevel4xx = toBeLevel4xxFn

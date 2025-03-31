@@ -141,6 +141,7 @@ const executeScriptInContext = (
               // Serialize matcher methods for use in the isolate context
               const matcherMethodNames = [
                 "toBe",
+                "toBeDeepEqual",
                 "toBeLevel2xx",
                 "toBeLevel3xx",
                 "toBeLevel4xx",
