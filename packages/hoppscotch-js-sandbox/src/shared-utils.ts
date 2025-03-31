@@ -443,7 +443,7 @@ export const createExpectation = (
     return undefined
   }
 
-  const toDeepEqualFn = (expectedVal: any) => {
+  const toBeDeepEqualFn = (expectedVal: any) => {
     let assertion = resolvedExpectVal === expectedVal
 
     if (negated) {
@@ -463,8 +463,8 @@ export const createExpectation = (
     return undefined
   }
 
-
   result.toBe = toBeFn
+  result.toBeDeepEqual = toBeDeepEqualFn
   result.toBeLevel2xx = toBeLevel2xxFn
   result.toBeLevel3xx = toBeLevel3xxFn
   result.toBeLevel4xx = toBeLevel4xxFn
@@ -472,7 +472,6 @@ export const createExpectation = (
   result.toBeType = toBeTypeFn
   result.toHaveLength = toHaveLengthFn
   result.toInclude = toIncludeFn
-  result.toDeepEqual = toDeepEqualFn
 
   Object.defineProperties(result, {
     not: {
