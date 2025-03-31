@@ -233,6 +233,10 @@ export const isObject = (object: unknown): boolean => {
   return object != null && typeof object === "object"
 }
 
+export const toJson = (object: any): string => {
+  return JSON.stringify(object, null, 0)
+}
+
 export const isDeepEqual = (object1: any, object2: any): boolean => {
   const objKeys1 = Object.keys(object1)
   const objKeys2 = Object.keys(object2)
@@ -480,9 +484,9 @@ export const createExpectation = (
     }
 
     const status = assertion ? "pass" : "fail"
-    const message = `Expected '${resolvedExpectVal}' to${
+    const message = `Expected '${toJson(resolvedExpectVal)}' to${
       negated ? " not" : ""
-    } be '${expectedVal}'`
+    } be '${toJson(expectedVal)}'`
 
     currTestStack[currTestStack.length - 1].expectResults.push({
       status,

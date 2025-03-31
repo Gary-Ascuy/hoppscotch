@@ -33,7 +33,7 @@ describe("toBeDeepEqual", () => {
           expectResults: [
             {
               status: "pass",
-              message: "Expected '[object Object]' to be '[object Object]'",
+              message: "Expected '{}' to be '{}'",
             },
           ],
         }),
