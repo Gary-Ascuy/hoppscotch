@@ -22,18 +22,60 @@ describe("toBeDeepEqual", () => {
   describe("general assertion (no negation)", () => {
     test("expect equals expected passes assertion", () => {
       return expect(
-        func(
-          `
-            pw.expect({}).toBeDeepEqual({})
-          `,
-          fakeResponse
-        )()
+        func(`pw.expect({}).toBeDeepEqual({})`, fakeResponse)()
       ).resolves.toEqualRight([
         expect.objectContaining({
           expectResults: [
             {
               status: "pass",
               message: "Expected '{}' to be '{}'",
+            },
+          ],
+        }),
+      ])
+    })
+
+    test("expect not equals expected fails assertion", () => {
+      return expect(
+        func(`pw.expect({name: "gary"}).toBeDeepEqual({})`, fakeResponse)()
+      ).resolves.toEqualRight([
+        expect.objectContaining({
+          expectResults: [
+            {
+              status: "fail",
+              message: "Expected '{\"name\":\"gary\"}' to be '{}'",
+            },
+          ],
+        }),
+      ])
+    })
+  })
+
+  describe("general assertion (with negation)", () => {
+    test("expect equals expected fails assertion", () => {
+      return expect(
+        func(`pw.expect({}).not.toBeDeepEqual({})`, fakeResponse)()
+      ).resolves.toEqualRight([
+        expect.objectContaining({
+          expectResults: [
+            {
+              status: "fail",
+              message: "Expected '{}' to not be '{}'",
+            },
+          ],
+        }),
+      ])
+    })
+
+    test("expect not equals expected passes assertion", () => {
+      return expect(
+        func(`pw.expect({}).not.toBeDeepEqual({name: "gory"})`, fakeResponse)()
+      ).resolves.toEqualRight([
+        expect.objectContaining({
+          expectResults: [
+            {
+              status: "pass",
+              message: "Expected '{}' to not be '{\"name\":\"gory\"}'",
             },
           ],
         }),
