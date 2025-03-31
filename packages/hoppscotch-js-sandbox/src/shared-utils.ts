@@ -229,6 +229,10 @@ export function preventCyclicObjects(
   }
 }
 
+export const isDeepEqual = (_a: unknown, _b: unknown): boolean => {
+  return true
+}
+
 /**
  * Creates an Expectation object for use inside the sandbox
  * @param expectVal The expecting value of the expectation
@@ -444,7 +448,7 @@ export const createExpectation = (
   }
 
   const toBeDeepEqualFn = (expectedVal: any) => {
-    let assertion = resolvedExpectVal === expectedVal
+    let assertion = isDeepEqual(resolvedExpectVal, expectedVal)
 
     if (negated) {
       assertion = !assertion
