@@ -443,6 +443,27 @@ export const createExpectation = (
     return undefined
   }
 
+  const toDeepEqualFn = (expectedVal: any) => {
+    let assertion = resolvedExpectVal === expectedVal
+
+    if (negated) {
+      assertion = !assertion
+    }
+
+    const status = assertion ? "pass" : "fail"
+    const message = `Expected '${resolvedExpectVal}' to${
+      negated ? " not" : ""
+    } be '${expectedVal}'`
+
+    currTestStack[currTestStack.length - 1].expectResults.push({
+      status,
+      message,
+    })
+
+    return undefined
+  }
+
+
   result.toBe = toBeFn
   result.toBeLevel2xx = toBeLevel2xxFn
   result.toBeLevel3xx = toBeLevel3xxFn
@@ -451,6 +472,7 @@ export const createExpectation = (
   result.toBeType = toBeTypeFn
   result.toHaveLength = toHaveLengthFn
   result.toInclude = toIncludeFn
+  result.toDeepEqual = toDeepEqualFn
 
   Object.defineProperties(result, {
     not: {
